@@ -1,6 +1,7 @@
-import User from './users.model'
-import { UserType } from './users.interface'
 import config from '../../../config'
+import ApiError from '../../../errorHandlers/ApiError'
+import { UserType } from './users.interface'
+import User from './users.model'
 import { generateUserId } from './users.utils'
 
 export const createUserInDB = async (
@@ -16,7 +17,7 @@ export const createUserInDB = async (
   }
   const createdUser = await User.create(user)
   if (!createdUser) {
-    throw new Error('Failed to create user!')
+    throw new ApiError(400, 'Failed to create user!')
   }
   return createdUser
 }
