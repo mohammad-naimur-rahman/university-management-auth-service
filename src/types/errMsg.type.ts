@@ -1,4 +1,4 @@
 export type GenericErrMsgType = {
-  path: string
+  path: string | number | undefined
   message: string
 }
