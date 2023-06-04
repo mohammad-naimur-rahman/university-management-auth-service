@@ -1,17 +1,10 @@
-import { NextFunction, Request, Response } from 'express'
-import mongoose from 'mongoose'
+import { ErrorRequestHandler } from 'express'
 import config from '../config'
 import ApiError from '../errorHandlers/ApiError'
 import handleValidationError from '../errorHandlers/handleValidationError'
-import { GlobalErrType } from '../types/common'
 import { GenericErrMsgType } from '../types/errMsg.type'
 
-const globalErrorHandler = (
-  err: mongoose.Error.ValidationError,
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
   let statusCode = 500
   let message = 'Something went wrong!'
   let errorMessages: GenericErrMsgType[] = []
@@ -25,15 +18,14 @@ const globalErrorHandler = (
   } else if (err instanceof Error) {
     message = err?.message
     errorMessages = err?.message ? [{ path: '', message }] : []
-  } else if ((err as object) instanceof ApiError) {
-    statusCode = (err as GlobalErrType).statusCode
-    message = (err as GlobalErrType).message
-    errorMessages = (err as GlobalErrType).message
-      ? [{ path: '', message }]
-      : []
+  } else if (err instanceof ApiError) {
+    statusCode = err.statusCode
+    message = err.message
+    errorMessages = err.message ? [{ path: '', message }] : []
   }
 
   res.status(statusCode).json({
+    success: false,
     statusCode,
     message,
     errorMessages,
