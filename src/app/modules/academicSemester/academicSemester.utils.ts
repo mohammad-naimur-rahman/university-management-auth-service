@@ -1,10 +1,20 @@
-export const academicSemesterTitleEnum: Array<string> = [
+import {
+  academicSemesterCodeType,
+  academicSemesterMonthsType,
+  academicSemesterTitleType,
+} from './academicSemester.interface'
+
+export const academicSemesterTitleEnum: Array<academicSemesterTitleType> = [
   'Autumn',
   'Summer',
   'Fall',
 ]
-export const academicSemesterCodeEnum: Array<string> = ['01', '02', '03']
-export const academicSemesterMonthsEnum: Array<string> = [
+export const academicSemesterCodeEnum: Array<academicSemesterCodeType> = [
+  '01',
+  '02',
+  '03',
+]
+export const academicSemesterMonthsEnum: Array<academicSemesterMonthsType> = [
   'January',
   'February',
   'March',
