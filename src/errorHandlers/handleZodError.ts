@@ -2,7 +2,7 @@ import { ZodError } from 'zod'
 import { GenericErrMsgType } from '../types/errMsg.type'
 
 const handleZodError = (err: ZodError) => {
-  const errors: GenericErrMsgType[] = err.issues.map(zodIssue => {
+  const errors: Array<GenericErrMsgType> = err.issues.map(zodIssue => {
     return {
       path: zodIssue.path[zodIssue.path.length - 1],
       message: zodIssue.message,

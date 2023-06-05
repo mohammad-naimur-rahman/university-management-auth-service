@@ -5,7 +5,7 @@ import { GenericErrMsgType } from '../types/errMsg.type'
 const handleValidationError = (
   err: mongoose.Error.ValidationError
 ): GenericErrResType => {
-  const errors: GenericErrMsgType[] = Object.values(err.errors).map(el => {
+  const errors: Array<GenericErrMsgType> = Object.values(err.errors).map(el => {
     return {
       path: el?.path,
       message: el?.message,

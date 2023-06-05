@@ -3,7 +3,7 @@ import { GenericErrMsgType } from '../errMsg.type'
 export type GenericErrResType = {
   statusCode: number
   message: string
-  errorMessages: GenericErrMsgType[]
+  errorMessages: Array<GenericErrMsgType>
   stack?: string
 }
 
