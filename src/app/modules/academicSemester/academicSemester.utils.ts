@@ -1,4 +1,5 @@
 import {
+  AcademicSemesterTitleCodeMapperType,
   academicSemesterCodeType,
   academicSemesterMonthsType,
   academicSemesterTitleType,
@@ -28,3 +29,10 @@ export const academicSemesterMonthsEnum: Array<academicSemesterMonthsType> = [
   'November',
   'December',
 ]
+
+export const academicSemesterTitleCodeMapper: AcademicSemesterTitleCodeMapperType =
+  {
+    Autumn: '01',
+    Summer: '02',
+    Fall: '03',
+  }

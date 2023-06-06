@@ -28,3 +28,9 @@ export type AcademicSemesterModel = Model<
   AcademicSemesterType,
   Record<string, unknown>
 >
+
+export type AcademicSemesterTitleCodeMapperType = {
+  Autumn: '01'
+  Summer: '02'
+  Fall: '03'
+}
