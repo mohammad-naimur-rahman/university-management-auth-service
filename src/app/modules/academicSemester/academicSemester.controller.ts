@@ -1,24 +1,17 @@
 import { RequestHandler } from 'express'
 import asyncHandler from 'express-async-handler'
+import sendResponse from '../../../shared/sendResponse'
+import { AcademicSemesterType } from './academicSemester.interface'
 import { AcademicSemesterServices } from './academicSemester.service'
 
 const createSemester: RequestHandler = asyncHandler(async (req, res) => {
   const createdUser = await AcademicSemesterServices.createSemesterInDB(
     req.body.academicSemester
   )
-  if (createdUser) {
-    res.status(200).json({
-      success: true,
-      data: createdUser,
-      message: 'Academic Semester created successfully!',
-    })
-  } else {
-    res.status(500).json({
-      success: false,
-      data: [],
-      message: 'Something went wrong!',
-    })
-  }
+  sendResponse<AcademicSemesterType>(res, {
+    data: createdUser,
+    message: 'Academic Semester created successfully!',
+  })
 })
 
 export const AcademcSemisterController = {
