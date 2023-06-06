@@ -1,4 +1,6 @@
+import status from 'http-status'
 import { Schema, model } from 'mongoose'
+import ApiError from '../../../errorHandlers/ApiError'
 import {
   AcademicSemesterModel,
   AcademicSemesterType,
@@ -9,7 +11,7 @@ import {
   academicSemesterTitleEnum,
 } from './academicSemester.utils'
 
-const userSchema = new Schema<AcademicSemesterType>(
+const academicSemesterSchema = new Schema<AcademicSemesterType>(
   {
     title: {
       type: String,
@@ -41,9 +43,20 @@ const userSchema = new Schema<AcademicSemesterType>(
   }
 )
 
+academicSemesterSchema.pre('save', async function (next) {
+  const doesExist = await AcademicSemester.findOne({
+    title: this.title,
+    year: this.year,
+  })
+  if (doesExist) {
+    throw new ApiError(status.CONFLICT, 'Acamedic semester already exists!')
+  }
+  next()
+})
+
 const AcademicSemester = model<AcademicSemesterType, AcademicSemesterModel>(
   'AcademicSemester',
-  userSchema
+  academicSemesterSchema
 )
 
 export default AcademicSemester
