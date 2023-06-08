@@ -7,6 +7,7 @@ const router = Router()
 
 router
   .route('/')
+  .get(AcademcSemisterController.getAllSemesters)
   .post(
     validateRequest(AcademicSemesterValidation.createAcademicSemesterZodSchema),
     AcademcSemisterController.createSemester
