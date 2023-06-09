@@ -4,3 +4,7 @@ export type PaginationOptionsType = {
   sortBy?: string
   sortOrder?: 'asc' | 'desc'
 }
+
+export type FiltersType = {
+  searchTerm?: string
+}

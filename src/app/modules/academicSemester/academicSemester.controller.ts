@@ -23,7 +23,10 @@ const getAllSemesters: RequestHandler = asyncHandler(async (req, res) => {
     'sortOrder',
   ])
 
+  const filters = pick(req.query, ['searchTerm'])
+
   const allSemesters = await AcademicSemesterServices.getAllSemesters(
+    filters,
     paginationOptions
   )
 

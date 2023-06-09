@@ -3,7 +3,10 @@ import { SortOrder } from 'mongoose'
 import ApiError from '../../../errorHandlers/ApiError'
 import { paginationHelpers } from '../../../helpers/paginationHelpers'
 import { GenericResponseType } from '../../../types/common/genericResponse'
-import { PaginationOptionsType } from '../../../types/common/pagination'
+import {
+  FiltersType,
+  PaginationOptionsType,
+} from '../../../types/common/pagination'
 import { AcademicSemesterType } from './academicSemester.interface'
 import AcademicSemester from './academicSemester.model'
 import { academicSemesterTitleCodeMapper } from './academicSemester.utils'
@@ -30,8 +33,36 @@ const createSemesterInDB = async (
 }
 
 const getAllSemesters = async (
+  filters: FiltersType,
   paginationOptions: PaginationOptionsType
 ): Promise<GenericResponseType<AcademicSemesterType[]>> => {
+  const { searchTerm } = filters
+
+  const andConditions = [
+    {
+      $or: [
+        {
+          title: {
+            $regex: searchTerm,
+            $options: 'i',
+          },
+        },
+        {
+          code: {
+            $regex: searchTerm,
+            $options: 'i',
+          },
+        },
+        {
+          year: {
+            $regex: searchTerm,
+            $options: 'i',
+          },
+        },
+      ],
+    },
+  ]
+
   const { page, limit, skip, sortBy, sortOrder } =
     paginationHelpers.calculatePagination(paginationOptions)
 
@@ -41,7 +72,7 @@ const getAllSemesters = async (
     sortConditions[sortBy] = sortOrder
   }
 
-  const result = await AcademicSemester.find()
+  const result = await AcademicSemester.find({ $and: andConditions })
     .sort(sortConditions)
     .skip(skip)
     .limit(limit)
