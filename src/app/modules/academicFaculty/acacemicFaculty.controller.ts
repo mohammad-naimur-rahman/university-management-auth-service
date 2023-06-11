@@ -1,9 +1,21 @@
 import { RequestHandler } from 'express'
 import asyncHandler from 'express-async-handler'
+import { pick } from '../../../shared/pick'
 import sendResponse from '../../../shared/sendResponse'
 import { AcademicFacultyServices } from './acacemicFaculty.service'
 const getAllFaculties: RequestHandler = asyncHandler(async (req, res) => {
-  const faculties = await AcademicFacultyServices.getFaculties()
+  const paginationOptions = pick(req.query, [
+    'page',
+    'limit',
+    'sortBy',
+    'sortOrder',
+  ])
+
+  const filters = pick(req.query, ['searchTerm', 'title', 'code', 'year'])
+  const faculties = await AcademicFacultyServices.getFaculties(
+    filters,
+    paginationOptions
+  )
   sendResponse(res, {
     message: 'Successfully retrieved all faculties',
     data: faculties,
