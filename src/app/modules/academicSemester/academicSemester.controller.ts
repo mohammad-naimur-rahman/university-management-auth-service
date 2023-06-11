@@ -62,9 +62,20 @@ const updateSemester = asyncHandler(async (req, res) => {
   })
 })
 
+const deleteSemester = asyncHandler(async (req, res) => {
+  const { id } = req.params
+  await AcademicSemesterServices.deleteSemester(id)
+
+  sendResponse<object>(res, {
+    data: {},
+    message: 'Academic Semester updated successfully!',
+  })
+})
+
 export const AcademcSemisterController = {
   createSemester,
   getAllSemesters,
   getSemester,
   updateSemester,
+  deleteSemester,
 }

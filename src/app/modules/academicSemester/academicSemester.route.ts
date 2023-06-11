@@ -20,5 +20,6 @@ router
     validateRequest(AcademicSemesterValidation.updateAcademicSemesterZodSchema),
     AcademcSemisterController.updateSemester
   )
+  .delete(AcademcSemisterController.deleteSemester)
 
 export const AcademicSemesterRoutes = router

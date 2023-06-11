@@ -110,9 +110,23 @@ const updateSemester = async (
   })
 }
 
+const deleteSemester = async (
+  id: string
+): Promise<AcademicSemesterType | null> => {
+  const result = await AcademicSemester.findByIdAndDelete(id)
+  if (result === null) {
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      `No semester exists with id ${id}!`
+    )
+  }
+  return result
+}
+
 export const AcademicSemesterServices = {
   createSemesterInDB,
   getAllSemesters,
   getSemester,
   updateSemester,
+  deleteSemester,
 }
