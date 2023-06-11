@@ -7,6 +7,7 @@ import {
   FiltersType,
   PaginationOptionsType,
 } from '../../../types/common/pagination'
+import { isNonEmptyObj } from '../../../utils/isNonEmptyObj'
 import { AcademicSemesterType } from './academicSemester.interface'
 import AcademicSemester from './academicSemester.model'
 import { academicSemesterTitleCodeMapper } from './academicSemester.utils'
@@ -36,23 +37,29 @@ const getAllSemesters = async (
   filters: FiltersType,
   paginationOptions: PaginationOptionsType
 ): Promise<GenericResponseType<AcademicSemesterType[]>> => {
-  const { searchTerm } = filters
+  const { searchTerm, ...filtersData } = filters
 
   const andConditionsArr = ['title', 'code', 'year']
 
-  let andConditions: object[] = []
+  const andConditions: Array<object> = []
 
   if (searchTerm) {
-    andConditions = [
-      {
-        $or: andConditionsArr.map(condition => ({
-          [condition]: {
-            $regex: searchTerm,
-            $options: 'i',
-          },
-        })),
-      },
-    ]
+    andConditions.push({
+      $or: andConditionsArr.map(condition => ({
+        [condition]: {
+          $regex: searchTerm,
+          $options: 'i',
+        },
+      })),
+    })
+  }
+
+  if (isNonEmptyObj(filtersData)) {
+    andConditions.push({
+      $and: Object.entries(filtersData).map(([field, value]) => ({
+        [field]: value,
+      })),
+    })
   }
 
   const { page, limit, skip, sortBy, sortOrder } =
@@ -64,7 +71,10 @@ const getAllSemesters = async (
     sortConditions[sortBy] = sortOrder
   }
 
-  const result = await AcademicSemester.find({ $and: andConditions })
+  const whereConditions: object =
+    andConditions.length > 0 ? { $and: andConditions } : {}
+
+  const result = await AcademicSemester.find(whereConditions)
     .sort(sortConditions)
     .skip(skip)
     .limit(limit)
