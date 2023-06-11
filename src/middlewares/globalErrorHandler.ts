@@ -4,6 +4,7 @@ import { ErrorRequestHandler } from 'express'
 import { ZodError } from 'zod'
 import config from '../config'
 import ApiError from '../errorHandlers/ApiError'
+import handleCastError from '../errorHandlers/handleCastError'
 import handleValidationError from '../errorHandlers/handleValidationError'
 import handleZodError from '../errorHandlers/handleZodError'
 import { errLogger } from '../shared/logger'
@@ -18,9 +19,14 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
   let message = 'Something went wrong!'
   let errorMessages: Array<GenericErrMsgType> = []
 
-  if (err.name === 'ValidationError') {
+  if (err?.name === 'ValidationError') {
     statusCode = 400
     const simplifiedError = handleValidationError(err)
+    statusCode = simplifiedError.statusCode
+    message = simplifiedError.message
+    errorMessages = simplifiedError.errorMessages
+  } else if (err?.name === 'CastError') {
+    const simplifiedError = handleCastError(err)
     statusCode = simplifiedError.statusCode
     message = simplifiedError.message
     errorMessages = simplifiedError.errorMessages
