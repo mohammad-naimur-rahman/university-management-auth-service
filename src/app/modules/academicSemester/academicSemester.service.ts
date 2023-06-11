@@ -85,7 +85,21 @@ const getAllSemesters = async (
   }
 }
 
+const getSemester = async (id: string): Promise<AcademicSemesterType> => {
+  const semester = await AcademicSemester.findById(id)
+
+  if (!semester) {
+    throw new ApiError(
+      httpStatus.INTERNAL_SERVER_ERROR,
+      `Could not find Academic Semester wih id ${id}`
+    )
+  }
+
+  return semester
+}
+
 export const AcademicSemesterServices = {
   createSemesterInDB,
   getAllSemesters,
+  getSemester,
 }

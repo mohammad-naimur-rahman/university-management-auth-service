@@ -13,4 +13,6 @@ router
     AcademcSemisterController.createSemester
   )
 
+router.route('/:id').get(AcademcSemisterController.getSemester)
+
 export const AcademicSemesterRoutes = router

@@ -37,7 +37,19 @@ const getAllSemesters: RequestHandler = asyncHandler(async (req, res) => {
   })
 })
 
+const getSemester: RequestHandler = asyncHandler(async (req, res) => {
+  const { id } = req.params
+
+  const semester = await AcademicSemesterServices.getSemester(id)
+
+  sendResponse<AcademicSemesterType>(res, {
+    data: semester,
+    message: 'Academic Semester retrieved successfully!',
+  })
+})
+
 export const AcademcSemisterController = {
   createSemester,
   getAllSemesters,
+  getSemester,
 }
