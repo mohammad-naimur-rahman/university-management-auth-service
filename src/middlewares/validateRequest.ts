@@ -1,8 +1,10 @@
 import { NextFunction, Request, Response } from 'express'
 import asyncHandler from 'express-async-handler'
-import { AnyZodObject } from 'zod'
+import { AnyZodObject, ZodEffects } from 'zod'
 
-export const validateRequest = (schema: AnyZodObject) =>
+export const validateRequest = (
+  schema: AnyZodObject | ZodEffects<AnyZodObject>
+) =>
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     await schema.parseAsync({
       body: req.body,

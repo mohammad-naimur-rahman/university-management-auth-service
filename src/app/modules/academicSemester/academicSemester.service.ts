@@ -85,21 +85,34 @@ const getAllSemesters = async (
   }
 }
 
-const getSemester = async (id: string): Promise<AcademicSemesterType> => {
-  const semester = await AcademicSemester.findById(id)
+const getSemester = async (
+  id: string
+): Promise<AcademicSemesterType | null> => {
+  return await AcademicSemester.findById(id)
+}
 
-  if (!semester) {
+const updateSemester = async (
+  id: string,
+  payload: Partial<AcademicSemesterType>
+): Promise<AcademicSemesterType | null> => {
+  if (
+    payload.title &&
+    payload.code &&
+    academicSemesterTitleCodeMapper[payload.title] !== payload.code
+  ) {
     throw new ApiError(
-      httpStatus.INTERNAL_SERVER_ERROR,
-      `Could not find Academic Semester wih id ${id}`
+      httpStatus.BAD_REQUEST,
+      'Did not match with semester code!'
     )
   }
-
-  return semester
+  return await AcademicSemester.findOneAndUpdate({ _id: id }, payload, {
+    new: true,
+  })
 }
 
 export const AcademicSemesterServices = {
   createSemesterInDB,
   getAllSemesters,
   getSemester,
+  updateSemester,
 }

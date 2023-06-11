@@ -13,6 +13,12 @@ router
     AcademcSemisterController.createSemester
   )
 
-router.route('/:id').get(AcademcSemisterController.getSemester)
+router
+  .route('/:id')
+  .get(AcademcSemisterController.getSemester)
+  .patch(
+    validateRequest(AcademicSemesterValidation.updateAcademicSemesterZodSchema),
+    AcademcSemisterController.updateSemester
+  )
 
 export const AcademicSemesterRoutes = router

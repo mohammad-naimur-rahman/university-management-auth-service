@@ -7,7 +7,7 @@ import { AcademicSemesterServices } from './academicSemester.service'
 
 const createSemester: RequestHandler = asyncHandler(async (req, res) => {
   const createdUser = await AcademicSemesterServices.createSemesterInDB(
-    req.body.academicSemester
+    req.body
   )
   sendResponse<AcademicSemesterType>(res, {
     data: createdUser,
@@ -48,8 +48,23 @@ const getSemester: RequestHandler = asyncHandler(async (req, res) => {
   })
 })
 
+const updateSemester = asyncHandler(async (req, res) => {
+  const { id } = req.params
+
+  const updatedSemester = await AcademicSemesterServices.updateSemester(
+    id,
+    req.body
+  )
+
+  sendResponse<AcademicSemesterType>(res, {
+    data: updatedSemester,
+    message: 'Academic Semester updated successfully!',
+  })
+})
+
 export const AcademcSemisterController = {
   createSemester,
   getAllSemesters,
   getSemester,
+  updateSemester,
 }
