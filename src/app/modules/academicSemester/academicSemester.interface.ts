@@ -18,7 +18,7 @@ export type academicSemesterMonthsType =
 
 export type AcademicSemesterType = {
   title: academicSemesterTitleType
-  year: number
+  year: string
   code: academicSemesterCodeType
   startMonth: academicSemesterMonthsType
   endMonth: academicSemesterMonthsType

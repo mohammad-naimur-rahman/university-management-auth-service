@@ -38,30 +38,22 @@ const getAllSemesters = async (
 ): Promise<GenericResponseType<AcademicSemesterType[]>> => {
   const { searchTerm } = filters
 
-  const andConditions = [
-    {
-      $or: [
-        {
-          title: {
+  const andConditionsArr = ['title', 'code', 'year']
+
+  let andConditions: object[] = []
+
+  if (searchTerm) {
+    andConditions = [
+      {
+        $or: andConditionsArr.map(condition => ({
+          [condition]: {
             $regex: searchTerm,
             $options: 'i',
           },
-        },
-        {
-          code: {
-            $regex: searchTerm,
-            $options: 'i',
-          },
-        },
-        {
-          year: {
-            $regex: searchTerm,
-            $options: 'i',
-          },
-        },
-      ],
-    },
-  ]
+        })),
+      },
+    ]
+  }
 
   const { page, limit, skip, sortBy, sortOrder } =
     paginationHelpers.calculatePagination(paginationOptions)
