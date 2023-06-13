@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { validateRequest } from '../../../middlewares/validateRequest'
+import { validateRequest } from '../../middlewares/validateRequest'
 import { AcademcSemisterController } from './academicSemester.controller'
 import { AcademicSemesterValidation } from './academicSemester.validation'
 
