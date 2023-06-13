@@ -52,6 +52,7 @@ const getAllDepartments = async (
     .sort(sortConditions)
     .skip(skip)
     .limit(limit)
+    .populate('AcademicFaculty')
 
   const total = await AcademicDepartment.countDocuments()
 

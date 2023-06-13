@@ -5,26 +5,25 @@ import { AcademicDepartmentValidation } from './academicDepartment.validations'
 
 const router = express.Router()
 
-router.post(
-  '/create-department',
-  validateRequest(
-    AcademicDepartmentValidation.createAcademicDepartmentZodSchema
-  ),
-  AcademicDepartmentController.createDepartment
-)
+router
+  .route('/')
+  .get(AcademicDepartmentController.getAllDepartments)
+  .post(
+    validateRequest(
+      AcademicDepartmentValidation.createAcademicDepartmentZodSchema
+    ),
+    AcademicDepartmentController.createDepartment
+  )
 
-router.get('/:id', AcademicDepartmentController.getSingleDepartment)
-
-router.patch(
-  '/:id',
-  validateRequest(
-    AcademicDepartmentValidation.updateAcademicDepartmentZodSchema
-  ),
-  AcademicDepartmentController.updateDepartment
-)
-
-router.delete('/:id', AcademicDepartmentController.deleteDepartment)
-
-router.get('/', AcademicDepartmentController.getAllDepartments)
+router
+  .route('/:id')
+  .get(AcademicDepartmentController.getSingleDepartment)
+  .patch(
+    validateRequest(
+      AcademicDepartmentValidation.updateAcademicDepartmentZodSchema
+    ),
+    AcademicDepartmentController.updateDepartment
+  )
+  .delete(AcademicDepartmentController.deleteDepartment)
 
 export const AcademicDepartmentRoutes = router
