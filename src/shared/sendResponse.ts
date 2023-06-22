@@ -1,26 +1,27 @@
-import { Response } from 'express'
-import httpStatus from 'http-status'
+import { Response } from 'express';
 
-type ApiResponseType<T> = {
-  statusCode?: number | undefined
-  success?: boolean | undefined
-  message?: string | null
+type IApiReponse<T> = {
+  statusCode: number;
+  success: boolean;
+  message?: string | null;
   meta?: {
-    page: number
-    limit: number
-    total: number
-  }
-  data?: T | null
-}
+    page: number;
+    limit: number;
+    total: number;
+  };
+  data?: T | null;
+};
 
-const sendResponse = <T>(res: Response, data: ApiResponseType<T>): void => {
-  const responseData: ApiResponseType<T> = {
-    success: data?.success || true,
-    message: data?.message || 'Document created successfully!',
-    meta: data?.meta,
-    data: data?.data || null,
-  }
-  res.status(data?.statusCode || httpStatus.OK).json(responseData)
-}
+const sendResponse = <T>(res: Response, data: IApiReponse<T>): void => {
+  const responseData: IApiReponse<T> = {
+    statusCode: data.statusCode,
+    success: data.success,
+    message: data.message || null,
+    meta: data.meta || null || undefined,
+    data: data.data || null || undefined,
+  };
 
-export default sendResponse
+  res.status(data.statusCode).json(responseData);
+};
+
+export default sendResponse;

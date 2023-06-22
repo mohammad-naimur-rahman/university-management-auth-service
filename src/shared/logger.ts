@@ -1,18 +1,22 @@
-import path from 'path'
-import { createLogger, format, transports } from 'winston'
-import DailyRotateFile from 'winston-daily-rotate-file'
-const { combine, timestamp, label, printf } = format
+/* eslint-disable no-undef */
+import path from 'path';
+import { createLogger, format, transports } from 'winston';
+import DailyRotateFile from 'winston-daily-rotate-file';
+const { combine, timestamp, label, printf } = format;
+
+//Customm Log Format
 
 const myFormat = printf(({ level, message, label, timestamp }) => {
-  const date = new Date(timestamp)
-  const time = `${date.toDateString()} - ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
-  return `${time} [${label}] ${level}: ${message}`
-})
+  const date = new Date(timestamp);
+  const hour = date.getHours();
+  const minutes = date.getMinutes();
+  const seconds = date.getSeconds();
+  return `${date.toDateString()} ${hour}:${minutes}:${seconds} } [${label}] ${level}: ${message}`;
+});
 
-export const logger = createLogger({
+const logger = createLogger({
   level: 'info',
-  format: combine(label({ label: 'UM' }), timestamp(), myFormat),
-  defaultMeta: { service: 'user-service' },
+  format: combine(label({ label: 'PH' }), timestamp(), myFormat),
   transports: [
     new transports.Console(),
     new DailyRotateFile({
@@ -21,20 +25,19 @@ export const logger = createLogger({
         'logs',
         'winston',
         'successes',
-        'um-success-%DATE%.log'
+        'phu-%DATE%-success.log'
       ),
-      datePattern: 'YYYY-MM-DD-HH',
+      datePattern: 'YYYY-DD-MM-HH',
       zippedArchive: true,
       maxSize: '20m',
       maxFiles: '14d',
     }),
   ],
-})
+});
 
-export const errLogger = createLogger({
+const errorlogger = createLogger({
   level: 'error',
-  format: combine(label({ label: 'UM' }), timestamp(), myFormat),
-  defaultMeta: { service: 'user-service' },
+  format: combine(label({ label: 'PH' }), timestamp(), myFormat),
   transports: [
     new transports.Console(),
     new DailyRotateFile({
@@ -43,12 +46,14 @@ export const errLogger = createLogger({
         'logs',
         'winston',
         'errors',
-        'um-error-%DATE%.log'
+        'phu-%DATE%-error.log'
       ),
-      datePattern: 'YYYY-MM-DD-HH',
+      datePattern: 'YYYY-DD-MM-HH',
       zippedArchive: true,
       maxSize: '20m',
       maxFiles: '14d',
     }),
   ],
-})
+});
+
+export { logger, errorlogger };

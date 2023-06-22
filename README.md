@@ -1,1 +1,0 @@
-#### University auth management backend

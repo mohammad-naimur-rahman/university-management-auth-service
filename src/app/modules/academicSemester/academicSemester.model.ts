@@ -1,22 +1,19 @@
-import httpStatus from 'http-status'
-import { Schema, model } from 'mongoose'
-import ApiError from '../../../errorHandlers/ApiError'
+import httpStatus from 'http-status';
+import { Schema, model } from 'mongoose';
+import ApiError from '../../../errors/ApiError';
 import {
-  AcademicSemesterModel,
-  AcademicSemesterType,
-} from './academicSemester.interface'
-import {
-  academicSemesterCodeEnum,
-  academicSemesterMonthsEnum,
-  academicSemesterTitleEnum,
-} from './academicSemester.utils'
+  academicSemesterCodes,
+  academicSemesterTitles,
+  acdemicSemesterMonths,
+} from './academicSemester.constant';
+import { IAcademicSemester } from './academicSemester.interface';
 
-const academicSemesterSchema = new Schema<AcademicSemesterType>(
+const academicSemesterSchema = new Schema<IAcademicSemester>(
   {
     title: {
       type: String,
       required: true,
-      emum: academicSemesterTitleEnum,
+      enum: academicSemesterTitles,
     },
     year: {
       type: String,
@@ -25,17 +22,17 @@ const academicSemesterSchema = new Schema<AcademicSemesterType>(
     code: {
       type: String,
       required: true,
-      enum: academicSemesterCodeEnum,
+      enum: academicSemesterCodes,
     },
     startMonth: {
       type: String,
       required: true,
-      enum: academicSemesterMonthsEnum,
+      enum: acdemicSemesterMonths,
     },
     endMonth: {
       type: String,
       required: true,
-      enum: academicSemesterMonthsEnum,
+      enum: acdemicSemesterMonths,
     },
   },
   {
@@ -44,22 +41,23 @@ const academicSemesterSchema = new Schema<AcademicSemesterType>(
       virtuals: true,
     },
   }
-)
+);
 
 academicSemesterSchema.pre('save', async function (next) {
-  const doesExist = await AcademicSemester.findOne({
+  const isExist = await AcademicSemester.findOne({
     title: this.title,
     year: this.year,
-  })
-  if (doesExist) {
-    throw new ApiError(httpStatus.CONFLICT, 'Acamedic semester already exists!')
+  });
+  if (isExist) {
+    throw new ApiError(
+      httpStatus.CONFLICT,
+      'Academic semester is already exist !'
+    );
   }
-  next()
-})
+  next();
+});
 
-const AcademicSemester = model<AcademicSemesterType, AcademicSemesterModel>(
+export const AcademicSemester = model<IAcademicSemester>(
   'AcademicSemester',
   academicSemesterSchema
-)
-
-export default AcademicSemester
+);
