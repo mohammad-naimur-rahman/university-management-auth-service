@@ -6,8 +6,12 @@ import ApiError from '../../errors/ApiError';
 import { jwtHelpers } from '../../helpers/jwtHelpers';
 
 const auth =
-  (...requiredRoles: string[]) =>
-  async (req: Request, res: Response, next: NextFunction) => {
+  <T>(...requiredRoles: string[]) =>
+  async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<T | void> => {
     try {
       //get authorization token
       const token = req.headers.authorization;
