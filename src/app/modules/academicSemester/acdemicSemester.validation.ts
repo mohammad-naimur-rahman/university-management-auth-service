@@ -1,9 +1,9 @@
-import { z } from 'zod';
+import { z } from 'zod'
 import {
   academicSemesterCodes,
   academicSemesterTitles,
   acdemicSemesterMonths,
-} from './academicSemester.constant';
+} from './academicSemester.constant'
 
 const createAcademicSemesterZodSchema = z.object({
   body: z.object({
@@ -21,7 +21,7 @@ const createAcademicSemesterZodSchema = z.object({
       required_error: 'End month is needed',
     }),
   }),
-});
+})
 
 ///  Ensure 1: Route Level : Update -->  Give me title and code both , neither
 
@@ -60,9 +60,9 @@ const updateAcademicSemesterZodSchema = z
     {
       message: 'Either both title and code should be provided or neither',
     }
-  );
+  )
 
 export const AcademicSemesterValidation = {
   createAcademicSemesterZodSchema,
   updateAcademicSemesterZodSchema,
-};
+}

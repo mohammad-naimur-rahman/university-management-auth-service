@@ -9,7 +9,7 @@ export const facultyFilterableFields = [
   'academicFaculty',
   'academicDepartment',
   'designation',
-];
+]
 
 export const facultySearchableFields = [
   'email',
@@ -18,4 +18,4 @@ export const facultySearchableFields = [
   'name.firstName',
   'name.lastName',
   'name.middleName',
-];
+]

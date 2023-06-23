@@ -1,18 +1,19 @@
-import express from 'express';
-import validateRequest from '../../middlewares/validateRequest';
-import { AdminController } from './admin.controller';
-import { AdminValidation } from './admin.validation';
-const router = express.Router();
+import { Router } from 'express'
+import validateRequest from '../../middlewares/validateRequest'
+import { AdminController } from './admin.controller'
+import { AdminValidation } from './admin.validation'
 
-router.get('/:id', AdminController.getSingleAdmin);
-router.get('/', AdminController.getAllAdmins);
+const router = Router()
 
-router.delete('/:id', AdminController.deleteAdmin);
+router.route('/').get(AdminController.getAllAdmins)
 
-router.patch(
-  '/:id',
-  validateRequest(AdminValidation.updateAdmin),
-  AdminController.updateAdmin
-);
+router
+  .route('/:id')
+  .get(AdminController.getSingleAdmin)
+  .patch(
+    validateRequest(AdminValidation.updateAdmin),
+    AdminController.updateAdmin
+  )
+  .delete(AdminController.deleteAdmin)
 
-export const AdminRoutes = router;
+export const AdminRoutes = router

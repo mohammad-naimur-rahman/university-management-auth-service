@@ -1,30 +1,29 @@
-import express from 'express';
-import validateRequest from '../../middlewares/validateRequest';
-import { ManagementDepartmentController } from './managementDepartment.controller';
-import { ManagementDepartmentValidation } from './managementDepartment.validation';
+import { Router } from 'express'
+import validateRequest from '../../middlewares/validateRequest'
+import { ManagementDepartmentController } from './managementDepartment.controller'
+import { ManagementDepartmentValidation } from './managementDepartment.validation'
 
-const router = express.Router();
+const router = Router()
 
-router.post(
-  '/create-department',
-  validateRequest(
-    ManagementDepartmentValidation.createManagementDepartmentZodSchema
-  ),
-  ManagementDepartmentController.createDepartment
-);
+router
+  .route('/')
+  .get(ManagementDepartmentController.getAllDepartments)
+  .post(
+    validateRequest(
+      ManagementDepartmentValidation.createManagementDepartmentZodSchema
+    ),
+    ManagementDepartmentController.createDepartment
+  )
 
-router.get('/:id', ManagementDepartmentController.getSingleDepartment);
+router
+  .route('/:id')
+  .get(ManagementDepartmentController.getSingleDepartment)
+  .patch(
+    validateRequest(
+      ManagementDepartmentValidation.updateManagementDepartmentZodSchema
+    ),
+    ManagementDepartmentController.updateDepartment
+  )
+  .delete(ManagementDepartmentController.deleteDepartment)
 
-router.patch(
-  '/:id',
-  validateRequest(
-    ManagementDepartmentValidation.updateManagementDepartmentZodSchema
-  ),
-  ManagementDepartmentController.updateDepartment
-);
-
-router.delete('/:id', ManagementDepartmentController.deleteDepartment);
-
-router.get('/', ManagementDepartmentController.getAllDepartments);
-
-export const ManagementDepartmentRoutes = router;
+export const ManagementDepartmentRoutes = router

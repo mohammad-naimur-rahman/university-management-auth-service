@@ -1,30 +1,29 @@
-import express from 'express';
-import validateRequest from '../../middlewares/validateRequest';
-import { AcademicDepartmentController } from './academicDepartment.controller';
-import { AcademicDepartmentValidation } from './academicDepartment.validations';
+import { Router } from 'express'
+import validateRequest from '../../middlewares/validateRequest'
+import { AcademicDepartmentController } from './academicDepartment.controller'
+import { AcademicDepartmentValidation } from './academicDepartment.validations'
 
-const router = express.Router();
+const router = Router()
 
-router.post(
-  '/create-department',
-  validateRequest(
-    AcademicDepartmentValidation.createAcademicDepartmentZodSchema
-  ),
-  AcademicDepartmentController.createDepartment
-);
+router
+  .route('/')
+  .get(AcademicDepartmentController.getAllDepartments)
+  .post(
+    validateRequest(
+      AcademicDepartmentValidation.createAcademicDepartmentZodSchema
+    ),
+    AcademicDepartmentController.createDepartment
+  )
 
-router.get('/:id', AcademicDepartmentController.getSingleDepartment);
+router
+  .route('/:id')
+  .get(AcademicDepartmentController.getSingleDepartment)
+  .patch(
+    validateRequest(
+      AcademicDepartmentValidation.updateAcademicDepartmentZodSchema
+    ),
+    AcademicDepartmentController.updateDepartment
+  )
+  .delete(AcademicDepartmentController.deleteDepartment)
 
-router.patch(
-  '/:id',
-  validateRequest(
-    AcademicDepartmentValidation.updateAcademicDepartmentZodSchema
-  ),
-  AcademicDepartmentController.updateDepartment
-);
-
-router.delete('/:id', AcademicDepartmentController.deleteDepartment);
-
-router.get('/', AcademicDepartmentController.getAllDepartments);
-
-export const AcademicDepartmentRoutes = router;
+export const AcademicDepartmentRoutes = router

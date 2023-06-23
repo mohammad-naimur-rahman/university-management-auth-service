@@ -1,14 +1,14 @@
-import { Model } from 'mongoose';
+import { Model } from 'mongoose'
 
 export type IManagementDepartment = {
-  title: string;
-};
+  title: string
+}
 
 export type ManagementDepartmentModel = Model<
   IManagementDepartment,
   Record<string, unknown>
->;
+>
 
 export type IManagementDepartmentFilters = {
-  searchTerm?: string;
-};
+  searchTerm?: string
+}
