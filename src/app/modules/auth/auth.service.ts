@@ -129,7 +129,6 @@ const changePassword = async (
   // data update
   targetedUser.password = newPassword
   targetedUser.needsPasswordChange = false
-  targetedUser.passwordChangedAt = new Date()
 
   // updating using save()
   targetedUser.save()
