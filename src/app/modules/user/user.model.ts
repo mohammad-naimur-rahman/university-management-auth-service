@@ -24,6 +24,10 @@ const UserSchema = new Schema<IUser, UserModel>(
       type: Boolean,
       default: true,
     },
+    passwordChangedAt: {
+      type: Date,
+      required: false,
+    },
     student: {
       type: Schema.Types.ObjectId,
       ref: 'Student',
