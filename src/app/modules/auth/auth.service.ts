@@ -96,18 +96,18 @@ const changePassword = async (
   // const isUserExist = await User.isUserExist(user?.userId);
 
   //alternative way
-  const isUserExist = await User.findOne({ id: user?.userId }).select(
+  const targetedUser = await User.findOne({ id: user?.userId }).select(
     '+password'
   )
 
-  if (!isUserExist) {
+  if (!targetedUser) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User does not exist')
   }
 
   // checking old password
   if (
-    isUserExist.password &&
-    !(await User.isPasswordMatched(oldPassword, isUserExist.password))
+    targetedUser.password &&
+    !(await User.isPasswordMatched(oldPassword, targetedUser.password))
   ) {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Old Password is incorrect')
   }
@@ -127,12 +127,12 @@ const changePassword = async (
 
   // await User.findOneAndUpdate(query, updatedData);
   // data update
-  isUserExist.password = newPassword
-  isUserExist.needsPasswordChange = false
-  isUserExist.passwordChangedAt = new Date()
+  targetedUser.password = newPassword
+  targetedUser.needsPasswordChange = false
+  targetedUser.passwordChangedAt = new Date()
 
   // updating using save()
-  isUserExist.save()
+  targetedUser.save()
 }
 
 export const AuthService = {
