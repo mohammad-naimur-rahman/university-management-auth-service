@@ -13,6 +13,11 @@ import {
 
 const loginUser = async (payload: ILoginUser): Promise<ILoginUserResponse> => {
   const { id, password } = payload
+  // creating instance of User
+  // const user = new User();
+  //  // access to our instance methods
+  //   const isUserExist = await user.isUserExist(id);
+
   const isUserExist = await User.isUserExist(id)
 
   if (!isUserExist) {
@@ -96,18 +101,18 @@ const changePassword = async (
   // const isUserExist = await User.isUserExist(user?.userId);
 
   //alternative way
-  const targetedUser = await User.findOne({ id: user?.userId }).select(
+  const isUserExist = await User.findOne({ id: user?.userId }).select(
     '+password'
   )
 
-  if (!targetedUser) {
+  if (!isUserExist) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User does not exist')
   }
 
   // checking old password
   if (
-    targetedUser.password &&
-    !(await User.isPasswordMatched(oldPassword, targetedUser.password))
+    isUserExist.password &&
+    !(await User.isPasswordMatched(oldPassword, isUserExist.password))
   ) {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Old Password is incorrect')
   }
@@ -127,11 +132,11 @@ const changePassword = async (
 
   // await User.findOneAndUpdate(query, updatedData);
   // data update
-  targetedUser.password = newPassword
-  targetedUser.needsPasswordChange = false
+  isUserExist.password = newPassword
+  isUserExist.needsPasswordChange = false
 
   // updating using save()
-  targetedUser.save()
+  isUserExist.save()
 }
 
 export const AuthService = {

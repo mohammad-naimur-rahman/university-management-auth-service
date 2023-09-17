@@ -7,45 +7,48 @@ import { AcademicFacultyValidation } from './academicFaculty.validations'
 
 const router = express.Router()
 
-router
-  .route('/')
-  .get(
-    auth(
-      ENUM_USER_ROLE.SUPER_ADMIN,
-      ENUM_USER_ROLE.ADMIN,
-      ENUM_USER_ROLE.STUDENT
-    ),
-    AcademicFacultyController.getAllFaculties
-  )
-  .post(
-    validateRequest(AcademicFacultyValidation.createFacultyZodSchema),
-    auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
-    AcademicFacultyController.createFaculty
-  )
+router.post(
+  '/create-faculty',
+  validateRequest(AcademicFacultyValidation.createFacultyZodSchema),
+  auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
+  AcademicFacultyController.createFaculty
+)
 
-router
-  .route('/:id')
-  .get(
-    auth(
-      ENUM_USER_ROLE.SUPER_ADMIN,
-      ENUM_USER_ROLE.ADMIN,
-      ENUM_USER_ROLE.FACULTY,
-      ENUM_USER_ROLE.STUDENT
-    ),
-    AcademicFacultyController.getSingleFaculty
-  )
-  .patch(
-    validateRequest(AcademicFacultyValidation.updatefacultyZodSchema),
-    auth(
-      ENUM_USER_ROLE.SUPER_ADMIN,
-      ENUM_USER_ROLE.ADMIN,
-      ENUM_USER_ROLE.FACULTY
-    ),
-    AcademicFacultyController.updateFaculty
-  )
-  .delete(
-    auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
-    AcademicFacultyController.deleteFaculty
-  )
+router.get(
+  '/:id',
+  auth(
+    ENUM_USER_ROLE.SUPER_ADMIN,
+    ENUM_USER_ROLE.ADMIN,
+    ENUM_USER_ROLE.FACULTY
+  ),
+  AcademicFacultyController.getSingleFaculty
+)
+
+router.get(
+  '/',
+  // auth(
+  //   ENUM_USER_ROLE.SUPER_ADMIN,
+  //   ENUM_USER_ROLE.ADMIN,
+  //   ENUM_USER_ROLE.FACULTY
+  // ),
+  AcademicFacultyController.getAllFaculties
+)
+
+router.patch(
+  '/:id',
+  validateRequest(AcademicFacultyValidation.updatefacultyZodSchema),
+  auth(
+    ENUM_USER_ROLE.SUPER_ADMIN,
+    ENUM_USER_ROLE.ADMIN,
+    ENUM_USER_ROLE.FACULTY
+  ),
+  AcademicFacultyController.updateFaculty
+)
+
+router.delete(
+  '/:id',
+  auth(ENUM_USER_ROLE.SUPER_ADMIN),
+  AcademicFacultyController.deleteFaculty
+)
 
 export const AcademicFacultyRoutes = router

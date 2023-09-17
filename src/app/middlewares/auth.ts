@@ -6,12 +6,8 @@ import ApiError from '../../errors/ApiError'
 import { jwtHelpers } from '../../helpers/jwtHelpers'
 
 const auth =
-  <T>(...requiredRoles: string[]) =>
-  async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<T | void> => {
+  (...requiredRoles: string[]) =>
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
       //get authorization token
       const token = req.headers.authorization
@@ -23,7 +19,7 @@ const auth =
 
       verifiedUser = jwtHelpers.verifyToken(token, config.jwt.secret as Secret)
 
-      req.user = verifiedUser // role , userid
+      req.user = verifiedUser // role  , userid
 
       // role diye guard korar jnno
       if (requiredRoles.length && !requiredRoles.includes(verifiedUser.role)) {
