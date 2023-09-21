@@ -11,7 +11,9 @@ import {
 } from './academicFaculty.interfaces'
 import { AcademicFaculty } from './academicFaculty.model'
 
-const createFaculty = async (payload: IAcademicFaculty) => {
+const createFaculty = async (
+  payload: IAcademicFaculty
+): Promise<IAcademicFaculty> => {
   const result = await AcademicFaculty.create(payload)
   return result
 }
@@ -48,7 +50,6 @@ const getAllFaculties = async (
   }
 
   // Filters needs $and to fullfill all the conditions
-  console.log(filtersData)
   if (Object.keys(filtersData).length) {
     andConditions.push({
       $and: Object.entries(filtersData).map(([field, value]) => ({

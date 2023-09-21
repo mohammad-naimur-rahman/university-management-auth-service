@@ -2,9 +2,9 @@
 import bcrypt from 'bcrypt'
 import { Schema, model } from 'mongoose'
 import config from '../../../config'
-import { IUser, IUserMethods, UserModel } from './user.interface'
+import { IUser, UserModel } from './user.interface'
 
-const UserSchema = new Schema<IUser, UserModel, IUserMethods>(
+const UserSchema = new Schema<IUser, UserModel>(
   {
     id: {
       type: String,
@@ -64,11 +64,11 @@ UserSchema.statics.isPasswordMatched = async function (
   return await bcrypt.compare(givenPassword, savedPassword)
 }
 
-UserSchema.methods.changedPasswordAfterJwtIssued = function (
-  jwtTimestamp: number
-) {
-  console.log({ jwtTimestamp }, 'hi')
-}
+// UserSchema.methods.changedPasswordAfterJwtIssued = function (
+//   jwtTimestamp: number
+// ) {
+
+// }
 
 // User.create() / user.save()
 UserSchema.pre('save', async function (next) {

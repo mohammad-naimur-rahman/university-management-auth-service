@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-unused-expressions */
 /* eslint-disable @typescript-eslint/no-unused-vars */
@@ -19,7 +20,7 @@ const globalErrorHandler: ErrorRequestHandler = (
   next: NextFunction
 ) => {
   config.env === 'development'
-    ? console.log(`🐱‍🏍 globalErrorHandler ~~`, { error })
+    ? console.error(`🐱‍🏍 globalErrorHandler ~~`, { error })
     : errorlogger.error(`🐱‍🏍 globalErrorHandler ~~`, error)
 
   let statusCode = 500

@@ -7,7 +7,7 @@ import {
 import { IAcademicSemesterCreatedEvent } from './academicSemester.interface'
 import { AcademicSemesterService } from './academicSemester.service'
 
-const initAcademicSemesterEvents = () => {
+const initAcademicSemesterEvents = (): void => {
   RedisClient.subscribe(EVENT_ACADEMIC_SEMESTER_CREATED, async (e: string) => {
     const data: IAcademicSemesterCreatedEvent = JSON.parse(e)
 

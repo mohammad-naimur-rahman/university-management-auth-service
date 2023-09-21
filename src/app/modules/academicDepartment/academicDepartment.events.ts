@@ -11,7 +11,7 @@ import {
 } from './academicDepartment.interfaces'
 import { AcademicDepartmentService } from './academicDepartment.service'
 
-const initAcademicDepartmentEvents = () => {
+const initAcademicDepartmentEvents = (): void => {
   RedisClient.subscribe(
     EVENT_ACADEMIC_DEPARTMENT_CREATED,
     async (e: string) => {

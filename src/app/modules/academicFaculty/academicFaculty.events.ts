@@ -11,7 +11,7 @@ import {
 } from './academicFaculty.interfaces'
 import { AcademicFacultyService } from './academicFaculty.service'
 
-const initAcademicFacultyEvents = () => {
+const initAcademicFacultyEvents = (): void => {
   RedisClient.subscribe(EVENT_ACADEMIC_FACULTY_CREATED, async (e: string) => {
     const data: AcademicFacultyCreatedEvent = JSON.parse(e)
 
